@@ -57,3 +57,32 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Application Architecture
+
+The application follows a feature-based folder structure with lazy-loaded routing:
+
+```
+src/app/
+├── layout/          # Shared layout shell (header, sidebar, footer)
+├── pages/           # Lazy-loaded page components
+│   ├── dashboard/
+│   ├── devices/
+│   ├── sites/
+│   ├── general-settings/
+│   └── account-settings/
+└── shared/
+    └── icons/       # SVG icon components
+```
+
+### Routes
+
+| Path                | Component          |
+|---------------------|--------------------|
+| `/`                 | → `/dashboard`     |
+| `/dashboard`        | Dashboard (lazy)   |
+| `/devices`          | Devices (lazy)     |
+| `/sites`            | Sites (lazy)       |
+| `/general-settings` | GeneralSettings (lazy) |
+| `/account-settings` | AccountSettings (lazy) |
+| `**`                | → `/dashboard`     |
