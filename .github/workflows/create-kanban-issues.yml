@@ -1,0 +1,146 @@
+name: Create GitHub Issues from KANBAN.md
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — print issues without creating them'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create labels
+        if: ${{ inputs.dry_run == 'false' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create "priority: critical"  --color "d73a4a" --description "🔴 Critical priority"  2>/dev/null || true
+          gh label create "priority: high"      --color "e4e669" --description "🟡 High priority"      2>/dev/null || true
+          gh label create "priority: medium"    --color "0075ca" --description "🟠 Medium priority"    2>/dev/null || true
+          gh label create "priority: low"       --color "cfd3d7" --description "🟢 Low priority"       2>/dev/null || true
+          gh label create "type: foundation"    --color "7057ff" --description "Foundation work"       2>/dev/null || true
+          gh label create "type: architecture"  --color "6f42c1" --description "Architecture work"     2>/dev/null || true
+          gh label create "type: ui-component"  --color "0e8a16" --description "UI Component"          2>/dev/null || true
+          gh label create "type: page"          --color "1d9b5a" --description "Page component"        2>/dev/null || true
+          gh label create "type: cross-cutting" --color "fbca04" --description "Cross-cutting concern" 2>/dev/null || true
+          gh label create "type: quality"       --color "f9d0c4" --description "Quality improvement"   2>/dev/null || true
+          gh label create "type: testing"       --color "bfd4f2" --description "Testing"               2>/dev/null || true
+          gh label create "type: documentation" --color "d4c5f9" --description "Documentation"         2>/dev/null || true
+          gh label create "kanban"              --color "29b6f6" --description "Task from KANBAN.md"   2>/dev/null || true
+
+      - name: Parse KANBAN.md and create issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          python3 << 'PYEOF'
+          import subprocess
+          import re
+          import os
+
+          dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
+
+          with open('KANBAN.md', 'r') as f:
+              content = f.read()
+
+          # Split on task headers, keeping the header in each chunk
+          raw_sections = re.split(r'(?=\n#### TASK-)', content)
+
+          priority_map = {
+              'critical': 'priority: critical',
+              'high':     'priority: high',
+              'medium':   'priority: medium',
+              'low':      'priority: low',
+          }
+          type_map = {
+              'foundation':    'type: foundation',
+              'architecture':  'type: architecture',
+              'ui component':  'type: ui-component',
+              'page':          'type: page',
+              'cross-cutting': 'type: cross-cutting',
+              'quality':       'type: quality',
+              'testing':       'type: testing',
+              'documentation': 'type: documentation',
+          }
+
+          created = 0
+          skipped = 0
+
+          for section in raw_sections:
+              header_match = re.match(r'\n?#### (TASK-\d+) · (.+)', section)
+              if not header_match:
+                  continue
+
+              task_id    = header_match.group(1)          # e.g. TASK-01
+              task_title = header_match.group(2).strip()  # e.g. Design Token & Global Styles Setup
+
+              # Extract Type
+              type_match     = re.search(r'\*\*Type:\*\*\s*(.+)', section)
+              priority_match = re.search(r'\*\*Priority:\*\*\s*[^\w]*(\w+)', section)
+
+              task_type     = type_match.group(1).strip().lower()     if type_match     else ''
+              task_priority = priority_match.group(1).strip().lower() if priority_match else ''
+
+              # Build label list
+              labels = ['kanban']
+              for key, label in priority_map.items():
+                  if key in task_priority:
+                      labels.append(label)
+                      break
+              for key, label in type_map.items():
+                  if key in task_type:
+                      labels.append(label)
+                      break
+
+              issue_title = f'[{task_id}] {task_title}'
+              issue_body  = section.strip()
+
+              if dry_run:
+                  print(f'[DRY RUN] Would create: "{issue_title}" with labels: {labels}')
+                  created += 1
+                  continue
+
+              # Idempotency check — skip if an open issue with this task ID already exists
+              check = subprocess.run(
+                  ['gh', 'issue', 'list',
+                   '--search', f'{task_id} in:title',
+                   '--state', 'open',
+                   '--json', 'title',
+                   '--limit', '10'],
+                  capture_output=True, text=True
+              )
+              if task_id in check.stdout:
+                  print(f'[SKIP] Issue already exists: {issue_title}')
+                  skipped += 1
+                  continue
+
+              # Create the issue
+              result = subprocess.run(
+                  ['gh', 'issue', 'create',
+                   '--title', issue_title,
+                   '--body',  issue_body,
+                   '--label', ','.join(labels)],
+                  capture_output=True, text=True
+              )
+              if result.returncode == 0:
+                  print(f'[CREATED] {issue_title}  →  {result.stdout.strip()}')
+                  created += 1
+              else:
+                  print(f'[ERROR] Failed to create "{issue_title}": {result.stderr.strip()}')
+
+          action = 'Would create' if dry_run else 'Created'
+          print(f'\nDone. {action}: {created}  |  Skipped (already exist): {skipped}')
+          PYEOF
