@@ -1,0 +1,87 @@
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">General Settings</h1>
+    <p class="page__subtitle">Configure system-wide preferences and defaults.</p>
+  </div>
+
+  <div class="settings-sections">
+    <section class="settings-card">
+      <h2 class="settings-card__title">Application</h2>
+      <div class="settings-list">
+        <div class="settings-row">
+          <div class="settings-row__info">
+            <label class="settings-row__label">App Name</label>
+            <p class="settings-row__desc">Display name shown in the header and emails.</p>
+          </div>
+          <input class="settings-input" type="text" value="NexusHub" aria-label="App Name"/>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__info">
+            <label class="settings-row__label">Timezone</label>
+            <p class="settings-row__desc">Default timezone for all date/time displays.</p>
+          </div>
+          <select class="settings-select" aria-label="Timezone">
+            <option>UTC</option>
+            <option>America/New_York</option>
+            <option>America/Los_Angeles</option>
+            <option>Europe/London</option>
+            <option>Asia/Tokyo</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__info">
+            <label class="settings-row__label">Language</label>
+            <p class="settings-row__desc">Interface language.</p>
+          </div>
+          <select class="settings-select" aria-label="Language">
+            <option>English</option>
+            <option>Spanish</option>
+            <option>French</option>
+            <option>German</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <h2 class="settings-card__title">Notifications</h2>
+      <div class="settings-list">
+        <div class="settings-row">
+          <div class="settings-row__info">
+            <label class="settings-row__label">Email Alerts</label>
+            <p class="settings-row__desc">Send email notifications for critical events.</p>
+          </div>
+          <label class="toggle" aria-label="Email Alerts">
+            <input class="toggle__input" type="checkbox" checked/>
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__info">
+            <label class="settings-row__label">Device Offline Alert</label>
+            <p class="settings-row__desc">Notify when a device goes offline.</p>
+          </div>
+          <label class="toggle" aria-label="Device Offline Alert">
+            <input class="toggle__input" type="checkbox" checked/>
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__info">
+            <label class="settings-row__label">Weekly Summary</label>
+            <p class="settings-row__desc">Receive a weekly usage report.</p>
+          </div>
+          <label class="toggle" aria-label="Weekly Summary">
+            <input class="toggle__input" type="checkbox"/>
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="settings-actions">
+    <button class="btn btn--outline">Cancel</button>
+    <button class="btn btn--primary">Save Changes</button>
+  </div>
+</div>

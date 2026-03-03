@@ -1,0 +1,76 @@
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">Devices</h1>
+    <p class="page__subtitle">Manage and monitor all connected devices.</p>
+  </div>
+
+  <div class="table-card">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input class="search-box__input" type="text" placeholder="Search devices…" aria-label="Search devices"/>
+      </div>
+      <button class="btn btn--primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Device
+      </button>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Device Name</th>
+            <th>Type</th>
+            <th>Site</th>
+            <th>Status</th>
+            <th>Last Seen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gateway-01</strong></td>
+            <td>Gateway</td>
+            <td>HQ Office</td>
+            <td><span class="badge badge--success">Online</span></td>
+            <td>Just now</td>
+          </tr>
+          <tr>
+            <td><strong>Sensor-04</strong></td>
+            <td>Sensor</td>
+            <td>Warehouse A</td>
+            <td><span class="badge badge--success">Online</span></td>
+            <td>3 min ago</td>
+          </tr>
+          <tr>
+            <td><strong>Camera-11</strong></td>
+            <td>Camera</td>
+            <td>Branch East</td>
+            <td><span class="badge badge--warning">Idle</span></td>
+            <td>1 hour ago</td>
+          </tr>
+          <tr>
+            <td><strong>Sensor-07</strong></td>
+            <td>Sensor</td>
+            <td>HQ Office</td>
+            <td><span class="badge badge--danger">Offline</span></td>
+            <td>3 hours ago</td>
+          </tr>
+          <tr>
+            <td><strong>Router-02</strong></td>
+            <td>Router</td>
+            <td>Branch West</td>
+            <td><span class="badge badge--success">Online</span></td>
+            <td>10 min ago</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">Dashboard</h1>
+    <p class="page__subtitle">Welcome back! Here's what's happening today.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card stat-card--blue">
+      <div class="stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="12" y1="18" x2="12.01" y2="18"/>
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">128</span>
+        <span class="stat-card__label">Total Devices</span>
+      </div>
+      <span class="stat-card__badge stat-card__badge--up">+12%</span>
+    </div>
+
+    <div class="stat-card stat-card--teal">
+      <div class="stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">34</span>
+        <span class="stat-card__label">Active Sites</span>
+      </div>
+      <span class="stat-card__badge stat-card__badge--up">+5%</span>
+    </div>
+
+    <div class="stat-card stat-card--indigo">
+      <div class="stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">99.8%</span>
+        <span class="stat-card__label">Uptime</span>
+      </div>
+      <span class="stat-card__badge stat-card__badge--up">Stable</span>
+    </div>
+
+    <div class="stat-card stat-card--amber">
+      <div class="stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">3</span>
+        <span class="stat-card__label">Alerts</span>
+      </div>
+      <span class="stat-card__badge stat-card__badge--down">Action needed</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section__title">Recent Activity</h2>
+    <div class="activity-list">
+      <div class="activity-item">
+        <span class="activity-item__dot activity-item__dot--success"></span>
+        <div class="activity-item__content">
+          <span class="activity-item__text">Device <strong>Gateway-01</strong> came online</span>
+          <span class="activity-item__time">2 minutes ago</span>
+        </div>
+      </div>
+      <div class="activity-item">
+        <span class="activity-item__dot activity-item__dot--warning"></span>
+        <div class="activity-item__content">
+          <span class="activity-item__text">Site <strong>HQ Office</strong> reported high latency</span>
+          <span class="activity-item__time">18 minutes ago</span>
+        </div>
+      </div>
+      <div class="activity-item">
+        <span class="activity-item__dot activity-item__dot--info"></span>
+        <div class="activity-item__content">
+          <span class="activity-item__text">Settings updated by <strong>admin&#64;example.com</strong></span>
+          <span class="activity-item__time">1 hour ago</span>
+        </div>
+      </div>
+      <div class="activity-item">
+        <span class="activity-item__dot activity-item__dot--danger"></span>
+        <div class="activity-item__content">
+          <span class="activity-item__text">Device <strong>Sensor-07</strong> went offline</span>
+          <span class="activity-item__time">3 hours ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
