@@ -1,0 +1,311 @@
+name: Scaffold Angular Project Structure
+
+on:
+  push:
+    branches:
+      - copilot/setup-angular-project-structure
+  workflow_dispatch:
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check if already scaffolded
+        id: check
+        run: |
+          if [ -f "src/app/layout/header/header.ts" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Angular project structure
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          python3 - <<'PYEOF'
+          import os
+
+          def write(path, content):
+              os.makedirs(os.path.dirname(path), exist_ok=True)
+              with open(path, 'w') as f:
+                  f.write(content)
+
+          # ── Layout: Header ───────────────────────────────────────────────
+          write('src/app/layout/header/header.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "import { RouterLink, RouterLinkActive } from '@angular/router';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-header',\n"
+              "  imports: [RouterLink, RouterLinkActive],\n"
+              "  templateUrl: './header.html',\n"
+              "  styleUrl: './header.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class Header {}\n")
+
+          write('src/app/layout/header/header.html',
+              '<header>\n'
+              '  <nav>\n'
+              '    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>\n'
+              '    <a routerLink="/devices" routerLinkActive="active">Devices</a>\n'
+              '    <a routerLink="/sites" routerLinkActive="active">Sites</a>\n'
+              '    <a routerLink="/general-settings" routerLinkActive="active">General Settings</a>\n'
+              '    <a routerLink="/account-settings" routerLinkActive="active">Account Settings</a>\n'
+              '  </nav>\n'
+              '</header>\n')
+
+          write('src/app/layout/header/header.css', '')
+
+          # ── Layout: Sidebar ──────────────────────────────────────────────
+          write('src/app/layout/sidebar/sidebar.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "import { RouterLink, RouterLinkActive } from '@angular/router';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-sidebar',\n"
+              "  imports: [RouterLink, RouterLinkActive],\n"
+              "  templateUrl: './sidebar.html',\n"
+              "  styleUrl: './sidebar.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class Sidebar {}\n")
+
+          write('src/app/layout/sidebar/sidebar.html',
+              '<aside>\n'
+              '  <nav>\n'
+              '    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>\n'
+              '    <a routerLink="/devices" routerLinkActive="active">Devices</a>\n'
+              '    <a routerLink="/sites" routerLinkActive="active">Sites</a>\n'
+              '    <a routerLink="/general-settings" routerLinkActive="active">General Settings</a>\n'
+              '    <a routerLink="/account-settings" routerLinkActive="active">Account Settings</a>\n'
+              '  </nav>\n'
+              '</aside>\n')
+
+          write('src/app/layout/sidebar/sidebar.css', '')
+
+          # ── Layout: Footer ───────────────────────────────────────────────
+          write('src/app/layout/footer/footer.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-footer',\n"
+              "  imports: [],\n"
+              "  templateUrl: './footer.html',\n"
+              "  styleUrl: './footer.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class Footer {}\n")
+
+          write('src/app/layout/footer/footer.html',
+              '<footer>\n'
+              '  <p>&copy; 2025 Welcome App</p>\n'
+              '</footer>\n')
+
+          write('src/app/layout/footer/footer.css', '')
+
+          # ── Pages: Dashboard ─────────────────────────────────────────────
+          write('src/app/pages/dashboard/dashboard.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-dashboard',\n"
+              "  imports: [],\n"
+              "  templateUrl: './dashboard.html',\n"
+              "  styleUrl: './dashboard.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class Dashboard {}\n")
+
+          write('src/app/pages/dashboard/dashboard.html',
+              '<section>\n'
+              '  <h1>Dashboard</h1>\n'
+              '</section>\n')
+
+          write('src/app/pages/dashboard/dashboard.css', '')
+
+          # ── Pages: Devices ───────────────────────────────────────────────
+          write('src/app/pages/devices/devices.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-devices',\n"
+              "  imports: [],\n"
+              "  templateUrl: './devices.html',\n"
+              "  styleUrl: './devices.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class Devices {}\n")
+
+          write('src/app/pages/devices/devices.html',
+              '<section>\n'
+              '  <h1>Devices</h1>\n'
+              '</section>\n')
+
+          write('src/app/pages/devices/devices.css', '')
+
+          # ── Pages: Sites ─────────────────────────────────────────────────
+          write('src/app/pages/sites/sites.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-sites',\n"
+              "  imports: [],\n"
+              "  templateUrl: './sites.html',\n"
+              "  styleUrl: './sites.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class Sites {}\n")
+
+          write('src/app/pages/sites/sites.html',
+              '<section>\n'
+              '  <h1>Sites</h1>\n'
+              '</section>\n')
+
+          write('src/app/pages/sites/sites.css', '')
+
+          # ── Pages: General Settings ──────────────────────────────────────
+          write('src/app/pages/general-settings/general-settings.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-general-settings',\n"
+              "  imports: [],\n"
+              "  templateUrl: './general-settings.html',\n"
+              "  styleUrl: './general-settings.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class GeneralSettings {}\n")
+
+          write('src/app/pages/general-settings/general-settings.html',
+              '<section>\n'
+              '  <h1>General Settings</h1>\n'
+              '</section>\n')
+
+          write('src/app/pages/general-settings/general-settings.css', '')
+
+          # ── Pages: Account Settings ──────────────────────────────────────
+          write('src/app/pages/account-settings/account-settings.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-account-settings',\n"
+              "  imports: [],\n"
+              "  templateUrl: './account-settings.html',\n"
+              "  styleUrl: './account-settings.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class AccountSettings {}\n")
+
+          write('src/app/pages/account-settings/account-settings.html',
+              '<section>\n'
+              '  <h1>Account Settings</h1>\n'
+              '</section>\n')
+
+          write('src/app/pages/account-settings/account-settings.css', '')
+
+          # ── Shared: Icons placeholder ────────────────────────────────────
+          write('src/app/shared/icons/.gitkeep', '')
+
+          # ── App Shell: routes ────────────────────────────────────────────
+          write('src/app/app.routes.ts',
+              "import { Routes } from '@angular/router';\n"
+              "\n"
+              "export const routes: Routes = [\n"
+              "  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },\n"
+              "  {\n"
+              "    path: 'dashboard',\n"
+              "    loadComponent: () =>\n"
+              "      import('./pages/dashboard/dashboard').then(m => m.Dashboard),\n"
+              "  },\n"
+              "  {\n"
+              "    path: 'devices',\n"
+              "    loadComponent: () =>\n"
+              "      import('./pages/devices/devices').then(m => m.Devices),\n"
+              "  },\n"
+              "  {\n"
+              "    path: 'sites',\n"
+              "    loadComponent: () =>\n"
+              "      import('./pages/sites/sites').then(m => m.Sites),\n"
+              "  },\n"
+              "  {\n"
+              "    path: 'general-settings',\n"
+              "    loadComponent: () =>\n"
+              "      import('./pages/general-settings/general-settings').then(\n"
+              "        m => m.GeneralSettings,\n"
+              "      ),\n"
+              "  },\n"
+              "  {\n"
+              "    path: 'account-settings',\n"
+              "    loadComponent: () =>\n"
+              "      import('./pages/account-settings/account-settings').then(\n"
+              "        m => m.AccountSettings,\n"
+              "      ),\n"
+              "  },\n"
+              "  { path: '**', redirectTo: 'dashboard' },\n"
+              "];\n")
+
+          # ── App Shell: app.ts ────────────────────────────────────────────
+          write('src/app/app.ts',
+              "import { ChangeDetectionStrategy, Component } from '@angular/core';\n"
+              "import { RouterOutlet } from '@angular/router';\n"
+              "import { Footer } from './layout/footer/footer';\n"
+              "import { Header } from './layout/header/header';\n"
+              "import { Sidebar } from './layout/sidebar/sidebar';\n"
+              "\n"
+              "@Component({\n"
+              "  selector: 'app-root',\n"
+              "  imports: [RouterOutlet, Header, Sidebar, Footer],\n"
+              "  templateUrl: './app.html',\n"
+              "  styleUrl: './app.css',\n"
+              "  changeDetection: ChangeDetectionStrategy.OnPush,\n"
+              "})\n"
+              "export class App {}\n")
+
+          # ── App Shell: app.html ──────────────────────────────────────────
+          write('src/app/app.html',
+              '<app-header />\n'
+              '<div class="layout-shell">\n'
+              '  <app-sidebar />\n'
+              '  <main class="main-content">\n'
+              '    <router-outlet />\n'
+              '  </main>\n'
+              '</div>\n'
+              '<app-footer />\n')
+
+          # ── App spec: updated for new shell ──────────────────────────────
+          write('src/app/app.spec.ts',
+              "import { TestBed } from '@angular/core/testing';\n"
+              "import { provideRouter } from '@angular/router';\n"
+              "import { App } from './app';\n"
+              "\n"
+              "describe('App', () => {\n"
+              "  beforeEach(async () => {\n"
+              "    await TestBed.configureTestingModule({\n"
+              "      imports: [App],\n"
+              "      providers: [provideRouter([])],\n"
+              "    }).compileComponents();\n"
+              "  });\n"
+              "\n"
+              "  it('should create the app', () => {\n"
+              "    const fixture = TestBed.createComponent(App);\n"
+              "    const app = fixture.componentInstance;\n"
+              "    expect(app).toBeTruthy();\n"
+              "  });\n"
+              "});\n")
+
+          PYEOF
+
+      - name: Commit and push
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --staged --quiet || git commit -m "feat: scaffold Angular project structure (TASK-02)"
+          git push
