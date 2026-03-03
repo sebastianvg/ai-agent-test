@@ -29,7 +29,7 @@ jobs:
         run: |
           gh label create "priority: critical"  --color "d73a4a" --description "🔴 Critical priority"  2>/dev/null || true
           gh label create "priority: high"      --color "e4e669" --description "🟡 High priority"      2>/dev/null || true
-          gh label create "priority: medium"    --color "0075ca" --description "🟠 Medium priority"    2>/dev/null || true
+          gh label create "priority: medium"    --color "fb8c00" --description "🟠 Medium priority"    2>/dev/null || true
           gh label create "priority: low"       --color "cfd3d7" --description "🟢 Low priority"       2>/dev/null || true
           gh label create "type: foundation"    --color "7057ff" --description "Foundation work"       2>/dev/null || true
           gh label create "type: architecture"  --color "6f42c1" --description "Architecture work"     2>/dev/null || true
@@ -50,13 +50,15 @@ jobs:
           import subprocess
           import re
           import os
+          import json
 
           dry_run = os.environ.get('DRY_RUN', 'false').lower() == 'true'
 
           with open('KANBAN.md', 'r') as f:
               content = f.read()
 
-          # Split on task headers, keeping the header in each chunk
+          # Split on task headers, keeping the header in each chunk.
+          # Format expected: #### TASK-XX <separator> Title
           raw_sections = re.split(r'(?=\n#### TASK-)', content)
 
           priority_map = {
@@ -80,7 +82,8 @@ jobs:
           skipped = 0
 
           for section in raw_sections:
-              header_match = re.match(r'\n?#### (TASK-\d+) · (.+)', section)
+              # Allow any non-alphanumeric separator between task ID and title (e.g. ·, -, :)
+              header_match = re.match(r'\n?#### (TASK-\d+)\s*[^\w\s]\s*(.+)', section)
               if not header_match:
                   continue
 
@@ -113,16 +116,21 @@ jobs:
                   created += 1
                   continue
 
-              # Idempotency check — skip if an open issue with this task ID already exists
+              # Idempotency check — skip if an open issue with this exact task ID prefix already exists.
+              # Issue titles are formatted as "[TASK-XX] Title", so we search by that prefix.
               check = subprocess.run(
                   ['gh', 'issue', 'list',
-                   '--search', f'{task_id} in:title',
+                   '--search', f'[{task_id}] in:title',
                    '--state', 'open',
                    '--json', 'title',
                    '--limit', '10'],
                   capture_output=True, text=True
               )
-              if task_id in check.stdout:
+              try:
+                  existing = json.loads(check.stdout or '[]')
+              except Exception:
+                  existing = []
+              if any(issue.get('title', '').startswith(f'[{task_id}]') for issue in existing):
                   print(f'[SKIP] Issue already exists: {issue_title}')
                   skipped += 1
                   continue
