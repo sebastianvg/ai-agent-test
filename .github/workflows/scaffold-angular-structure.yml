@@ -6,6 +6,7 @@ on:
       - copilot/setup-angular-project-structure
     paths:
       - .github/workflows/scaffold-angular-structure.yml
+  workflow_dispatch:
 
 jobs:
   scaffold:
