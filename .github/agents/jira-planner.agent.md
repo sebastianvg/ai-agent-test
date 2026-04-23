@@ -5,7 +5,7 @@
 # For format details, see: https://gh.io/customagents/config
 
 name: Jira Planner
-description:
+description: Jira tasks creator
 ---
 
 # My Agent
