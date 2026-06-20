@@ -1,0 +1,16 @@
+.layout-shell {
+  display: flex;
+  min-height: calc(100vh - var(--space-16));
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--space-4);
+  overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+  .layout-shell {
+    min-height: calc(100vh - var(--space-14));
+  }
+}
