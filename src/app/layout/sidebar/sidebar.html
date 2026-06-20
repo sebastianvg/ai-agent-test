@@ -1,9 +1,35 @@
-<aside>
-  <nav>
-    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/devices" routerLinkActive="active">Devices</a>
-    <a routerLink="/sites" routerLinkActive="active">Sites</a>
-    <a routerLink="/general-settings" routerLinkActive="active">General Settings</a>
-    <a routerLink="/account-settings" routerLinkActive="active">Account Settings</a>
+@if (mobileOpen()) {
+  <div
+    class="sidebar__backdrop"
+    (click)="close()"
+    aria-hidden="true">
+  </div>
+}
+
+<aside
+  class="sidebar"
+  [class.sidebar--collapsed]="collapsed()"
+  [class.sidebar--mobile-open]="mobileOpen()">
+  <nav aria-label="Main navigation">
+    <ul class="sidebar__list">
+      @for (item of navItems; track item.route) {
+        <li>
+          <a
+            class="sidebar__link"
+            [routerLink]="item.route"
+            routerLinkActive="sidebar__link--active"
+            [title]="collapsed() ? item.label : ''">
+            <svg
+              class="sidebar__icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true">
+              <path [attr.d]="item.iconPath" />
+            </svg>
+            <span class="sidebar__label">{{ item.label }}</span>
+          </a>
+        </li>
+      }
+    </ul>
   </nav>
 </aside>

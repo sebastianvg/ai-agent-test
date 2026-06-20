@@ -1,6 +1,9 @@
-<app-header />
+<app-header (sidebarToggled)="onSidebarToggle()" />
 <div class="layout-shell">
-  <app-sidebar />
+  <app-sidebar
+    [collapsed]="isCollapsed()"
+    [mobileOpen]="isMobileOpen()"
+    (closeRequested)="onSidebarClose()" />
   <main class="main-content">
     <router-outlet />
   </main>
